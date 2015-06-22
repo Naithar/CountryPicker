@@ -37,6 +37,7 @@
 
 #import "CountryPicker.h"
 
+#import <NBPhoneNumberUtil.h>
 
 #pragma GCC diagnostic ignored "-Wselector"
 #pragma GCC diagnostic ignored "-Wgnu"
@@ -87,13 +88,13 @@
         for (NSString *code in [NSLocale ISOCountryCodes])
         {
             NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:code];
-
+            
             //workaround for simulator bug
             if (!countryName)
             {
                 countryName = [[NSLocale localeWithLocaleIdentifier:@"en_US"] displayNameForKey:NSLocaleCountryCode value:code];
             }
- 
+            
             namesByCode[code] = countryName ?: code;
         }
         _countryNamesByCode = [namesByCode copy];
@@ -227,22 +228,32 @@
     {
         view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 280, 30)];
         
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35, 3, 245, 24)];
+        UILabel *codeLabel = [[UILabel alloc] initWithFrame:CGRectMake(-10, 3, 50, 24)];
+        codeLabel.backgroundColor = [UIColor clearColor];
+        codeLabel.tag = 3;
+        codeLabel.textAlignment = NSTextAlignmentCenter;
+        [view addSubview:codeLabel];
+        
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80, 3, 245, 24)];
         label.backgroundColor = [UIColor clearColor];
         label.tag = 1;
         [view addSubview:label];
         
-        UIImageView *flagView = [[UIImageView alloc] initWithFrame:CGRectMake(3, 3, 24, 24)];
+        UIImageView *flagView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 3, 24, 24)];
         flagView.contentMode = UIViewContentModeScaleAspectFit;
         flagView.tag = 2;
         [view addSubview:flagView];
     }
-
+    
     ((UILabel *)[view viewWithTag:1]).text = [[self class] countryNames][(NSUInteger)row];
     NSString *imagePath = [NSString stringWithFormat:@"CountryPicker.bundle/%@", [[self class] countryCodes][(NSUInteger) row]];
     ((UIImageView *)[view viewWithTag:2]).image = [UIImage imageNamed:imagePath];
-
-
+    
+    NBPhoneNumberUtil *utility = [NBPhoneNumberUtil sharedInstance];
+    ((UILabel *)[view viewWithTag:3]).text = [NSString stringWithFormat:@"(+%@)", [utility getCountryCodeForRegion:[[self class] countryCodes][(NSUInteger) row]]];
+    
+    
     return view;
 }
 
