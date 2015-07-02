@@ -16,5 +16,8 @@
   },
   "source_files": "CountryPicker/CountryPicker.{h,m}",
   "resources": "CountryPicker/CountryPicker.bundle",
-  "requires_arc": true
+  "requires_arc": true,
+  "dependency" : [
+    "libPhoneNumber-iOS"
+  ]
 }
