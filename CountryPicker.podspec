@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '4.3'
   s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/**/*'
+  s.source_files = 'CountryPicker/*.{h,m}'
   s.resources = ['CountryPicker/CountryPicker.bundle']
 
   s.public_header_files = 'CountryPicker/CountryPicker.h'
