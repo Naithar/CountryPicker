@@ -37,7 +37,7 @@
 
 #import "CountryPicker.h"
 
-#import <NBPhoneNumberUtil.h>
+#import <libPhoneNumber-iOS/NBPhoneNumberUtil.h>
 
 #pragma GCC diagnostic ignored "-Wselector"
 #pragma GCC diagnostic ignored "-Wgnu"
@@ -247,8 +247,11 @@
     }
     
     ((UILabel *)[view viewWithTag:1]).text = [[self class] countryNames][(NSUInteger)row];
+    
     NSString *imagePath = [NSString stringWithFormat:@"CountryPicker.bundle/%@", [[self class] countryCodes][(NSUInteger) row]];
-    ((UIImageView *)[view viewWithTag:2]).image = [UIImage imageNamed:imagePath];
+    
+    NSString *path = [[NSBundle bundleForClass:[CountryPicker class]] pathForResource:imagePath ofType:@"png"];
+    ((UIImageView *)[view viewWithTag:2]).image = [UIImage imageWithContentsOfFile:path];
     
     NBPhoneNumberUtil *utility = [NBPhoneNumberUtil sharedInstance];
     ((UILabel *)[view viewWithTag:3]).text = [NSString stringWithFormat:@"(+%@)", [utility getCountryCodeForRegion:[[self class] countryCodes][(NSUInteger) row]]];
